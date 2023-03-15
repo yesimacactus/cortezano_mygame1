@@ -10,6 +10,8 @@ from settings import *
 from sprites import *
 # from pg.sprite import Sprite
 
+from random import randint
+vec = pg.math.Vector2
 # set up assets folders
 game_folder = os.path.dirname(__file__)
 img_folder = os.path.join(game_folder, "img")
@@ -34,6 +36,15 @@ pewpews = pg.sprite.Group()
 # player is instantiated here
 player = Player()
 invader = Mob()
+invader.vel = vec(randint(2,20),randint(2,20))
+
+
+for i in range(0,10):
+    m = Mob()
+    m.vel = vec(randint(8,80),randint(8,80))
+    all_sprites.add(m)
+    enemies.add(m)
+
 
 # testSprite = Sprite()
 # testSprite.image = pg.Surface((50,50))
@@ -59,10 +70,10 @@ while RUNNING:
     ### update section of game loop (if updates take longer the 1/30th of a second, you will get laaaaag...)
     all_sprites.update()
 
-    blocks_hit_list = pg.sprite.spritecollide(player, enemies, True)
+    ''' blocks_hit_list = pg.sprite.spritecollide(player, enemies, True)
     for block in blocks_hit_list:
         # print(enemies)
-        pass
+        pass '''
     ### draw and render section of game loop
     screen.fill(BLUE)
     all_sprites.draw(screen)
