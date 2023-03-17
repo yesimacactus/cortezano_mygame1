@@ -33,9 +33,12 @@ all_sprites = pg.sprite.Group()
 enemies = pg.sprite.Group()
 pewpews = pg.sprite.Group()
 
+
 # player is instantiated here
 player = Player()
+player.rect.x = 5
 invader = Mob()
+invader.image.fill((0,0,255))
 invader.vel = vec(randint(2,20),randint(2,20))
 
 # for loop adding enemies
@@ -65,15 +68,15 @@ while RUNNING:
         # check for window closing
         if event.type == pg.QUIT:
             RUNNING = False
-            # break
+            # breakd
     # print(get_mouse_now())
     ### update section of game loop (if updates take longer the 1/30th of a second, you will get laaaaag...)
     all_sprites.update()
 
-    ''' blocks_hit_list = pg.sprite.spritecollide(player, enemies, True)
+    blocks_hit_list = pg.sprite.spritecollide(player, enemies, True)
     for block in blocks_hit_list:
         # print(enemies)
-        pass '''
+        pass
     ### draw and render section of game loop
     screen.fill(BLUE)
     all_sprites.draw(screen)
