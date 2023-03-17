@@ -38,10 +38,10 @@ player = Player()
 invader = Mob()
 invader.vel = vec(randint(2,20),randint(2,20))
 
-
+# for loop adding enemies
 for i in range(0,10):
     m = Mob()
-    m.vel = vec(randint(8,80),randint(8,80))
+    m.vel = vec(randint(8,50),randint(8,50))
     all_sprites.add(m)
     enemies.add(m)
 

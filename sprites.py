@@ -32,6 +32,7 @@ class Player(Sprite):
         if keystate[pg.K_d]:
             self.acc.x = PLAYER_ACC
     def behavior(self):
+        #keep on screen
         if self.rect.x > WIDTH:
             self.pos.x = 0
         if self.rect.x < -1:
@@ -60,6 +61,7 @@ class Mob(Sprite):
         self.cofric = 0.1
         self.canjump = False
     def behavior(self):
+        #keep on screen
         #add velocity
         # self.pos.y += self.vel.y
         if self.rect.x > WIDTH or self.rect.x < 0 or self.rect.y > HEIGHT or self.rect.y < 0:
