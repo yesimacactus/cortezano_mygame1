@@ -14,7 +14,8 @@ from random import randint
 vec = pg.math.Vector2
 # set up assets folders
 game_folder = os.path.dirname(__file__)
-img_folder = os.path.join(game_folder, "img")
+img_folder = os.path.join(game_folder, "images")
+
 
 def get_mouse_now():
     x,y = pg.mouse.get_pos()
@@ -29,13 +30,15 @@ screen = pg.display.set_mode((WIDTH, HEIGHT))
 pg.display.set_caption("My first game...")
 clock = pg.time.Clock() 
 
+player_img = pg.image.load(path.join(img_folder, "bell-ar-man.png")).convert()
+
 all_sprites = pg.sprite.Group()
 enemies = pg.sprite.Group()
 pewpews = pg.sprite.Group()
 
 
 # player is instantiated here
-player = Player()
+player = Player(player_img)
 player.rect.x = 5
 invader = Mob()
 invader.image.fill((0,0,255))
@@ -80,6 +83,7 @@ while RUNNING:
     ### draw and render section of game loop
     screen.fill(BLUE)
     all_sprites.draw(screen)
+    screen.blit(player_img, player.rect)
     # double buffering draws frames for entire screen
     pg.display.flip()
     # pg.display.update() -> only updates a portion of the screen
