@@ -10,6 +10,41 @@ from settings import *
 from sprites import *
 # from pg.sprite import Sprite
 
+class Game:
+    def __init__(self):
+        pg.init()
+        pg.mixer.init()]
+        self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.display.set_caption("My Game...")
+        self.clock = pg.time.Clock()
+        self.running = True
+    def new(self):
+        self.score = 0
+        self.all_sprites = pg.sprite.Group()
+        self.platforms = pg.sprite.Group()
+        self.enemies = pg.sprite.Group()
+        self.player = Player(self)
+        self.all_sprites.add(self.player)
+        for i in range(1,10):
+            e = Mob()
+            self.all_sprites.add(e)
+        self.run()
+    def run(self):
+        self.playing = True
+        while self.playing:
+            self.clock.tick(FPS)
+            self.events()
+            self.update()
+            self.draw()
+    
+    def events():
+        pass
+    def update():
+        pass
+    def draw():
+        pass
+
+
 from random import randint
 vec = pg.math.Vector2
 # set up assets folders
@@ -32,40 +67,17 @@ clock = pg.time.Clock()
 
 player_img = pg.image.load(path.join(img_folder, "bell-ar-man.png")).convert()
 
-all_sprites = pg.sprite.Group()
-enemies = pg.sprite.Group()
-pewpews = pg.sprite.Group()
 
 
-# player is instantiated here
-player = Player(player_img)
-player.rect.x = 5
-invader = Mob()
-invader.image.fill((0,0,255))
-invader.vel = vec(randint(2,20),randint(2,20))
-
-# for loop adding enemies
-for i in range(0,10):
-    m = Mob()
-    m.vel = vec(randint(8,50),randint(8,50))
-    all_sprites.add(m)
-    enemies.add(m)
 
 
-# testSprite = Sprite()
-# testSprite.image = pg.Surface((50,50))
-# testSprite.image.fill(GREEN)
-# testSprite.rect = testSprite.image.get_rect()
-# testSprite.rect.center = (WIDTH / 2, HEIGHT / 2)
-all_sprites.add(player)
-all_sprites.add(invader)
-# all_sprites.add(testSprite)
+
+
 
 # game loop
 
 while RUNNING:
     #  keep loop running at the right speed
-    clock.tick(FPS)
     ### process input events section of game loop
     for event in pg.event.get():
         # check for window closing
