@@ -8,6 +8,7 @@ HEIGHT = 600
 FPS = 30
 RUNNING = True
 
+
 # player attributes
 PLAYER_ACC  = 2
 PLAYER_FRICTION = -0.12
@@ -18,5 +19,6 @@ MOB_FRICTION = -0.12
 BLACK = (0,0,0)
 RED = (255, 10, 10)
 BLUE = (50, 50, 255)
+WHITE = (255, 255, 255)
 
 

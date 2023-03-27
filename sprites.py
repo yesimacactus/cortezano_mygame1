@@ -8,16 +8,15 @@ from settings import *
 
 vec = pg.math.Vector2
 
-from os import path
 
 # create a player
 
 class Player(Sprite):
-    def __init__(self, image_file):
+    def __init__(self, game):
         Sprite.__init__(self)
-        self.image_file = image_file
+        self.game = game
         self.image = pg.Surface((50,50))
-        self.image = pg.transform.scale(image_file, (50,38))
+        # self.image = pg.transform.scale((50, 38))
         self.image.fill(BLACK)
         self.rect = self.image.get_rect()
         self.pos = vec(WIDTH/2, HEIGHT/2)
@@ -35,24 +34,28 @@ class Player(Sprite):
             self.acc.y = PLAYER_ACC
         if keystate[pg.K_d]:
             self.acc.x = PLAYER_ACC
-    def behavior(self):
-        #keep on screen
-        if self.rect.x > WIDTH:
-            self.pos.x = 0
-        if self.rect.x < -1:
-            self.pos.x = WIDTH
-        if self.rect.y > HEIGHT:
-            self.pos.y = 0
-        if self.rect.y < -1:
-            self.pos.y = HEIGHT
+    # def jump(self):
+    #     # jump only if standing on a platform
+    #     self.rect.x += 1
+    #     hits = pg.sprite.spritecollide(self, self.game.platforms, False)
+    #     self.rect.x -= 1
+    #     if hits:
+    #         self.vel.y = -PLAYER_JUMP
     def update(self):
         self.acc = self.vel * PLAYER_FRICTION
-        self.behavior()
         self.input()
         self.vel += self.acc
         self.pos += self.vel + 0.5 * self.acc
         self.rect.center = self.pos
-
+        if self.rect.x > WIDTH:
+            self.pos.x = 0
+        if self.rect.x < 0:
+            self.pos.x = WIDTH
+        if self.rect.y < 0:
+            self.pos.y = HEIGHT
+        if self.rect.y > HEIGHT:
+            self.pos.y = 0
+            
 class Mob(Sprite):
     def __init__(self):
         Sprite.__init__(self)
@@ -60,17 +63,15 @@ class Mob(Sprite):
         self.image.fill(RED)
         self.rect = self.image.get_rect()
         self.pos = vec(WIDTH/2, HEIGHT/2)
-        self.vel = vec(1,1)
+        self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.cofric = 0.1
         self.canjump = False
     def behavior(self):
-        #keep on screen
-        #add velocity
-        # self.pos.y += self.vel.y
         if self.rect.x > WIDTH or self.rect.x < 0 or self.rect.y > HEIGHT or self.rect.y < 0:
             self.vel *= -1
-    def update(self): 
+
+    def update(self):
         self.behavior()
         self.pos += self.vel
         self.rect.center = self.pos
