@@ -40,10 +40,20 @@ class Game:
             self.enemies = pg.sprite.Group()
             # instantiates player class from sprites file, and passes this game class as an argument
             self.player = Player(self)
+            #instantiate a platform
+            self.plat1 = Platform(0, HEIGHT-20, WIDTH, 20)
+            self.plat2 = Platform(WIDTH-90, HEIGHT-145, 45, 20)
+            self.plat3 = Platform(50, 500, 500, 25)
+            self.all_sprites.add(self.plat1)
+            self.all_sprites.add(self.plat2)
+            self.all_sprites.add(self.plat3)
             self.all_sprites.add(self.player)
-            for i in range(1,10):
-                e = Mob()
-                self.all_sprites.add(e)
+            self.platforms.add(self.plat1)
+            self.platforms.add(self.plat2)
+            self.platforms.add(self.plat3)
+            #for i in range(1,10):
+            #    e = Mob()
+            #    self.all_sprites.add(e)
             self.run()
     def run(self):
         self.playing = True
@@ -70,11 +80,18 @@ class Game:
          text_rect = text_surface.get_rect()
          text_rect.midtop = (x, y)
          self.screen.blit(text_surface, text_rect)
-    def get_mouse_now():
+    def get_mouse_now(): 
          x,y = pg.mouse.get_pos()
          return (x,y)
     def update(self):
         self.all_sprites.update()
+        if self.player.vel.y > 0:
+            hits = pg.sprite.spritecollide(self.player, self.platforms, False)
+            if hits:
+                print("ive collided w a platfrm")
+                self.player.pos.y = hits[0].rect.top
+                self.player.vel.y = 0
+
     def draw(self):
         self.screen.fill(BLUE)
         self.draw_text("Hello there!", 42, WHITE, WIDTH/2, HEIGHT/10)
