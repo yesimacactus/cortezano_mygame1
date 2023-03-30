@@ -25,5 +25,8 @@ WHITE = (255, 255, 255)
 GREEN = (100, 255, 100)
 
 
-
+#platlist
+PLATFORM_LIST = [(0, HEIGHT-20, WIDTH, 20), 
+                 (WIDTH-90, HEIGHT-145, 45, 20),
+                  (50, 500, 500, 25) ]
 

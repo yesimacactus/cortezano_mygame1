@@ -41,16 +41,13 @@ class Game:
             # instantiates player class from sprites file, and passes this game class as an argument
             self.player = Player(self)
             #instantiate a platform
-            self.plat1 = Platform(0, HEIGHT-20, WIDTH, 20)
-            self.plat2 = Platform(WIDTH-90, HEIGHT-145, 45, 20)
-            self.plat3 = Platform(50, 500, 500, 25)
-            self.all_sprites.add(self.plat1)
-            self.all_sprites.add(self.plat2)
-            self.all_sprites.add(self.plat3)
             self.all_sprites.add(self.player)
-            self.platforms.add(self.plat1)
-            self.platforms.add(self.plat2)
-            self.platforms.add(self.plat3)
+
+            for plat in PLATFORM_LIST:
+                # *plat allows argument to pass
+                p = Platform(*plat)
+                self.all_sprites.add(p)
+                self.platforms.add(p)
             #for i in range(1,10):
             #    e = Mob()
             #    self.all_sprites.add(e)
