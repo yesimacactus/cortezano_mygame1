@@ -14,10 +14,10 @@ class Player1(Sprite):
         # these are the properties
         self.game = game
         self.image = pg.Surface((50,50))
-        self.image.fill(BLACK)
+        self.image.fill(PURPLE)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = vec(WIDTH/2, HEIGHT/2)
+        self.rect.center = (200, HEIGHT/2)
+        self.pos = vec(200, HEIGHT/2)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.cofric = 0.1
@@ -44,8 +44,9 @@ class Player1(Sprite):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
-        # if hits:
-        self.vel.y = -PLAYER_JUMP
+        #cannot jump if in air
+        if hits:
+            self.vel.y = -PLAYER_JUMP
     
     def mob_collide(self):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
@@ -65,21 +66,23 @@ class Player1(Sprite):
         if self.rect.x < 0:
             self.pos.x = WIDTH
 
+# copied from player 1, change input keys, changed color 
 class Player2(Sprite):
     def __init__(self, game):
         Sprite.__init__(self)
         # these are the properties
         self.game = game
         self.image = pg.Surface((50,50))
-        self.image.fill(BLACK)
+        self.image.fill(RED)
         self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = vec(WIDTH/2, HEIGHT/2)
+        self.rect.center = (600, HEIGHT/2)
+        self.pos = vec(600, HEIGHT/2)
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.cofric = 0.1
         self.canjump = False
     def input(self):
+        global keystate
         keystate = pg.key.get_pressed()
         # if keystate[pg.K_w]:
         #     self.acc.y = -PLAYER_ACC
@@ -101,8 +104,8 @@ class Player2(Sprite):
         self.rect.x += 1
         hits = pg.sprite.spritecollide(self, self.game.platforms, False)
         self.rect.x -= 1
-        # if hits:
-        self.vel.y = -PLAYER_JUMP
+        if hits:
+            self.vel.y = -PLAYER_JUMP
     
     def mob_collide(self):
             hits = pg.sprite.spritecollide(self, self.game.enemies, True)
@@ -172,3 +175,42 @@ class Platform(Sprite):
         self.rect.y = y
         self.variant = variant
 
+class Wall(Sprite):
+    def __init__(self, x, y):
+        Sprite.__init__(self)
+        self.width = 4
+        self.height = HEIGHT
+        self.image = pg.Surface((self.width,self.height))
+        self.color = (240,240,240)
+        self.image.fill(self.color)
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+
+#  projectiles 
+class Projectile(Sprite):
+    def __init__(self, position, whofired):
+        Sprite.__init__(self)
+        self.width = 20
+        self.height = 20
+        self.image = pg.Surface((self.width,self.height))
+        self.color = YELLOW
+        self.image.fill(self.color)
+
+        self.rect = self.image.get_rect()
+        self.rect.center = whofired
+        self.pos = position
+        self.vel = 1
+        self.acc = 1
+        self.cofric = 0.01
+
+    def behavior(self):
+        self.acc.x = self.vel.x
+        self.input()
+        self.vel += self.acc
+        self.pos += self.vel + 0.5 * self.acc
+        self.rect.midbottom = self.pos
+        if self.rect.x > WIDTH:
+            self.pos.x = 0
+        if self.rect.x < 0:
+            self.pos.x = WIDTH

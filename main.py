@@ -6,6 +6,9 @@
 # testing github changes
 # I changed something - I changed something else tooooo!
 
+# GOALS!!!!!!!!!!!!!!!!!!!!!
+# make 2 players and shoot at each other so that if shot too many times, death happens
+
 # This file was created by: Chris Cozort
 # Sources: http://kidscancode.org/blog/2016/08/pygame_1-1_getting-started/
 # Sources: 
@@ -39,10 +42,14 @@ class Game:
         self.score = 0
         self.all_sprites = pg.sprite.Group()
         self.platforms = pg.sprite.Group()
+        self.walls = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
+        self.projectiles = pg.sprite.Group()
         self.player1 = Player1(self)
         self.player2 = Player2(self)
         self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
+        #self.proj1 = Projectile()
+
         # self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
         self.all_sprites.add(self.plat1)
 
@@ -50,14 +57,16 @@ class Game:
         
         self.all_sprites.add(self.player1)
         self.all_sprites.add(self.player2)
+        
+        # for wall in WALL_LIST:
+          #  w = Wall(*wall)
+            #self.all_sprites.add(w)
+            # self.walls.add(w)
+
         for plat in PLATFORM_LIST:
             p = Platform(*plat)
             self.all_sprites.add(p)
             self.platforms.add(p)
-        for i in range(0,10):
-            m = Mob(20,20,(0,255,0))
-            self.all_sprites.add(m)
-            self.enemies.add(m)
         self.run()
     def run(self):
         self.playing = True
@@ -103,6 +112,8 @@ class Game:
                 else:
                     self.player2.pos.y = hits[0].rect.top
                     self.player2.vel.y = 0
+
+    
 
 
     def draw(self):
