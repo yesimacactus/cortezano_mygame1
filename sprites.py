@@ -3,7 +3,6 @@ from pygame.sprite import Sprite
 from settings import *
 from random import randint
 
-
 vec = pg.math.Vector2
 
 # player class
@@ -65,6 +64,9 @@ class Player1(Sprite):
             self.pos.x = 0
         if self.rect.x < 0:
             self.pos.x = WIDTH
+        global p1
+        p1 = (self.pos[0], self.pos[1])
+        print(p1)
 
 # copied from player 1, change input keys, changed color 
 class Player2(Sprite):
@@ -125,41 +127,6 @@ class Player2(Sprite):
         if self.rect.x < 0:
             self.pos.x = WIDTH
 
-class Mob(Sprite):
-    def __init__(self,width,height, color):
-        Sprite.__init__(self)
-        self.width = width
-        self.height = height
-        self.image = pg.Surface((self.width,self.height))
-        self.color = color
-        self.image.fill(self.color)
-        self.rect = self.image.get_rect()
-        self.rect.center = (WIDTH/2, HEIGHT/2)
-        self.pos = vec(WIDTH/2, HEIGHT/2)
-        self.vel = vec(randint(1,5),randint(1,5))
-        self.acc = vec(1,1)
-        self.cofric = 0.01
-    # ...
-    def inbounds(self):
-        if self.rect.x > WIDTH:
-            self.vel.x *= -1
-            # self.acc = self.vel * -self.cofric
-        if self.rect.x < 0:
-            self.vel.x *= -1
-            # self.acc = self.vel * -self.cofric
-        if self.rect.y < 0:
-            self.vel.y *= -1
-            # self.acc = self.vel * -self.cofric
-        if self.rect.y > HEIGHT:
-            self.vel.y *= -1
-            # self.acc = self.vel * -self.cofric
-    def update(self):
-        self.inbounds()
-        # self.pos.x += self.vel.x
-        # self.pos.y += self.vel.y
-        self.pos += self.vel
-        self.rect.center = self.pos
-
 # create a new platform class...
 
 class Platform(Sprite):
@@ -175,42 +142,26 @@ class Platform(Sprite):
         self.rect.y = y
         self.variant = variant
 
-class Wall(Sprite):
-    def __init__(self, x, y):
-        Sprite.__init__(self)
-        self.width = 4
-        self.height = HEIGHT
-        self.image = pg.Surface((self.width,self.height))
-        self.color = (240,240,240)
-        self.image.fill(self.color)
-        self.rect = self.image.get_rect()
-        self.rect.x = x
-        self.rect.y = y
 
 #  projectiles 
 class Projectile(Sprite):
-    def __init__(self, position, whofired):
+    def __init__(self):
         Sprite.__init__(self)
         self.width = 20
         self.height = 20
         self.image = pg.Surface((self.width,self.height))
         self.color = YELLOW
         self.image.fill(self.color)
-
+            
         self.rect = self.image.get_rect()
-        self.rect.center = whofired
-        self.pos = position
+        self.rect.center = p1
         self.vel = 1
         self.acc = 1
         self.cofric = 0.01
 
-    def behavior(self):
-        self.acc.x = self.vel.x
-        self.input()
-        self.vel += self.acc
-        self.pos += self.vel + 0.5 * self.acc
-        self.rect.midbottom = self.pos
+    def update(self):
+        self.rect.x += 1
         if self.rect.x > WIDTH:
-            self.pos.x = 0
+            self.remove
         if self.rect.x < 0:
-            self.pos.x = WIDTH
+            self.remove

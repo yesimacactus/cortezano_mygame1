@@ -63,6 +63,12 @@ class Game:
             #self.all_sprites.add(w)
             # self.walls.add(w)
 
+
+
+
+
+
+
         for plat in PLATFORM_LIST:
             p = Platform(*plat)
             self.all_sprites.add(p)
@@ -88,6 +94,26 @@ class Game:
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_UP:
                     self.player2.jump()
+# adding projectiles if either s or down is pressed, but only if they are pressed
+            global fired
+
+            fired = False
+            keystate = pg.key.get_pressed()
+            if event.type == pg.KEYDOWN:
+                if event.key == pg.K_s:
+                    fired = True
+            if keystate[pg.K_DOWN]:
+                if event.key == pg.K_DOWN:
+                    fired = True
+
+            if fired:
+                proj = Projectile()
+                self.projectiles.add(proj)
+                self.all_sprites.add(proj)
+
+               
+                    
+
     def update(self):
         self.all_sprites.update()
         if self.player1.vel.y > 0:
