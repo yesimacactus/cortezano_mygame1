@@ -27,10 +27,14 @@ class Player1(Sprite):
         #     self.acc.y = -PLAYER_ACC
         if keystate[pg.K_a]:
             self.acc.x = -PLAYER_ACC
+            # face to be accessed in the projectile classes to determine which way the projectile moves
+            global face1
+            face1 = "left"
         # if keystate[pg.K_s]:
         #     self.acc.y = PLAYER_ACC
         if keystate[pg.K_d]:
             self.acc.x = PLAYER_ACC
+            face1 = "right"
         # if keystate[pg.K_p]:
         #     if PAUSED == False:
         #         PAUSED = True
@@ -64,9 +68,9 @@ class Player1(Sprite):
             self.pos.x = 0
         if self.rect.x < 0:
             self.pos.x = WIDTH
+        # getting the coordinates of the player as a tuple from the indices of the vector 
         global p1
-        p1 = (self.pos[0], self.pos[1])
-        print(p1)
+        p1 = (self.pos[0], self.pos[1] - 27)
 
 # copied from player 1, change input keys, changed color 
 class Player2(Sprite):
@@ -90,10 +94,13 @@ class Player2(Sprite):
         #     self.acc.y = -PLAYER_ACC
         if keystate[pg.K_LEFT]:
             self.acc.x = -PLAYER_ACC
+            global face2
+            face2 = "left"
         # if keystate[pg.K_s]:
         #     self.acc.y = PLAYER_ACC
         if keystate[pg.K_RIGHT]:
             self.acc.x = PLAYER_ACC
+            face2 = "right"
         # if keystate[pg.K_p]:
         #     if PAUSED == False:
         #         PAUSED = True
@@ -126,6 +133,8 @@ class Player2(Sprite):
             self.pos.x = 0
         if self.rect.x < 0:
             self.pos.x = WIDTH
+        global p2
+        p2 = (self.pos[0], self.pos[1] - 27)
 
 # create a new platform class...
 
@@ -143,12 +152,12 @@ class Platform(Sprite):
         self.variant = variant
 
 
-#  projectiles 
+#  projectiles
 class Projectile(Sprite):
     def __init__(self):
         Sprite.__init__(self)
-        self.width = 20
-        self.height = 20
+        self.width = 15
+        self.height = 15
         self.image = pg.Surface((self.width,self.height))
         self.color = YELLOW
         self.image.fill(self.color)
@@ -160,7 +169,32 @@ class Projectile(Sprite):
         self.cofric = 0.01
 
     def update(self):
-        self.rect.x += 1
+        # moves
+        self.rect.x += 3
+        # if offscreen, death
+        if self.rect.x > WIDTH:
+            self.remove
+        if self.rect.x < 0:
+            self.remove
+
+class Projectile2(Sprite):
+    def __init__(self):
+        Sprite.__init__(self)
+        self.width = 15
+        self.height = 15
+        self.image = pg.Surface((self.width,self.height))
+        self.color = YELLOW
+        self.image.fill(self.color)
+            
+        self.rect = self.image.get_rect()
+        self.rect.center = p2
+        self.vel = 1
+        self.acc = 1
+        self.cofric = 0.01
+
+    def update(self):
+        self.rect.x -= 3
+
         if self.rect.x > WIDTH:
             self.remove
         if self.rect.x < 0:

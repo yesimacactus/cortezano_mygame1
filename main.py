@@ -19,6 +19,7 @@ import os
 # import settings 
 from settings import *
 from sprites import *
+from time import sleep
 # from pg.sprite import Sprite
 
 # set up assets folders
@@ -95,25 +96,29 @@ class Game:
                 if event.key == pg.K_UP:
                     self.player2.jump()
 # adding projectiles if either s or down is pressed, but only if they are pressed
-            global fired
 
-            fired = False
+            global whofired
+            whofired = "e"
             keystate = pg.key.get_pressed()
             if event.type == pg.KEYDOWN:
                 if event.key == pg.K_s:
-                    fired = True
-            if keystate[pg.K_DOWN]:
+                    whofired = "p1"
+            if event.type == pg.KEYDOWN:
                 if event.key == pg.K_DOWN:
-                    fired = True
+                    whofired = "p2"
+                    
 
-            if fired:
+            if whofired == "p1":
                 proj = Projectile()
                 self.projectiles.add(proj)
                 self.all_sprites.add(proj)
 
-               
-                    
+            if whofired == "p2":
+                proj2 = Projectile2()
+                self.projectiles.add(proj2)
+                self.all_sprites.add(proj2)
 
+               
     def update(self):
         self.all_sprites.update()
         if self.player1.vel.y > 0:
@@ -138,6 +143,10 @@ class Game:
                 else:
                     self.player2.pos.y = hits[0].rect.top
                     self.player2.vel.y = 0
+        p1damage = pg.sprite.spritecollide(self.player1, self.projectiles, False)
+        if p1damage:
+            print( "hit me")
+        p2damage = pg.sprite.spritecollide(self.player2, self.projectiles, False)       
 
     
 
