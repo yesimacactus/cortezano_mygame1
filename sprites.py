@@ -117,11 +117,11 @@ class Player2(Sprite):
             self.vel.y = -PLAYER_JUMP
     
     def mob_collide(self):
-            hits = pg.sprite.spritecollide(self, self.game.enemies, True)
+            hits = pg.sprite.spritecollide(self, self.projectiles, True)
             if hits:
                 print("you collided with an enemy...")
-                self.game.score += 1
-                print(SCORE)
+                self.game.HP2 += 1
+                print(HP2)
     def update(self):
         self.acc = vec(0, PLAYER_GRAV)
         self.acc.x = self.vel.x * PLAYER_FRICTION

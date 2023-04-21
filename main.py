@@ -46,6 +46,8 @@ class Game:
         self.walls = pg.sprite.Group()
         self.enemies = pg.sprite.Group()
         self.projectiles = pg.sprite.Group()
+        self.projectile1s = pg.sprite.Group()
+        self.projectile2s = pg.sprite.Group()
         self.player1 = Player1(self)
         self.player2 = Player2(self)
         self.plat1 = Platform(WIDTH, 50, 0, HEIGHT-50, (150,150,150), "normal")
@@ -111,13 +113,14 @@ class Game:
             if whofired == "p1":
                 proj = Projectile()
                 self.projectiles.add(proj)
+                self.projectile1s.add(proj)
                 self.all_sprites.add(proj)
 
             if whofired == "p2":
                 proj2 = Projectile2()
                 self.projectiles.add(proj2)
+                self.projectile2s.add(proj2)
                 self.all_sprites.add(proj2)
-
                
     def update(self):
         self.all_sprites.update()
@@ -143,13 +146,32 @@ class Game:
                 else:
                     self.player2.pos.y = hits[0].rect.top
                     self.player2.vel.y = 0
-        p1damage = pg.sprite.spritecollide(self.player1, self.projectiles, False)
+        p1damage = pg.sprite.spritecollide(self.player1, self.projectile2s, False)
         if p1damage:
             print( "hit me")
-        p2damage = pg.sprite.spritecollide(self.player2, self.projectiles, False)       
-
-    
-
+            global HP1
+            HP1 += 1
+            print(HP1)
+            if HP1 > 200:
+                del self.player1
+                self.player1 = Player1(self)
+                self.all_sprites.add(self.player1)
+                HP1 = 0
+                global SCORE2
+                SCORE2 += 1
+        p2damage = pg.sprite.spritecollide(self.player2, self.projectile1s, False)
+        if p2damage:
+            print("hit me")
+            global HP2
+            HP2 += 2
+            print(HP2)
+            if HP2 > 200:
+                del self.player2
+                self.player2 = Player2(self)
+                self.all_sprites.add(self.player2)
+                HP2 = 0
+                global SCORE1
+                SCORE1 += 1
 
     def draw(self):
         self.screen.fill(BLUE)
@@ -157,12 +179,16 @@ class Game:
         # is this a method or a function?
         pg.display.flip()
     def draw_text(self, text, size, color, x, y):
-        font_name = pg.font.match_font('arial')
-        font = pg.font.Font(font_name, size)
-        text_surface = font.render(text, True, color)
-        text_rect = text_surface.get_rect()
-        text_rect.midtop = (x,y)
-        self.screen.blit(text_surface, text_rect)
+        def __init__(self):
+            font_name = pg.font.match_font('arial')
+            font = pg.font.Font(font_name, size)
+            text_surface = font.render(text, True, color)
+            text_rect = text_surface.get_rect()
+            text_rect.midtop = (x,y)
+            self.screen.blit(text_surface, text_rect)
+    draw_text(1, "Player 1: " + str(SCORE1), 20, WHITE, 10, 100)
+    draw_text(2, "Player 1: " + str(SCORE2), 20, WHITE, 10, 100)
+
     def get_mouse_now(self):
         x,y = pg.mouse.get_pos()
         return (x,y)

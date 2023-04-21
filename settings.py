@@ -16,6 +16,12 @@ RED = (255,50,50)
 PURPLE = (235, 60, 240)
 YELLOW = (255, 255, 50)
 
+HP2 = 0
+HP1 = 0
+
+SCORE1 = 0
+SCORE2 = 0
+
 FPS = 60
 RUNNING = True
 SCORE = 0
