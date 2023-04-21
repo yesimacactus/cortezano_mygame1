@@ -152,7 +152,7 @@ class Game:
             global HP1
             HP1 += 1
             print(HP1)
-            if HP1 > 200:
+            if HP1 > 100:
                 del self.player1
                 self.player1 = Player1(self)
                 self.all_sprites.add(self.player1)
@@ -165,7 +165,7 @@ class Game:
             global HP2
             HP2 += 2
             print(HP2)
-            if HP2 > 200:
+            if HP2 > 100:
                 del self.player2
                 self.player2 = Player2(self)
                 self.all_sprites.add(self.player2)
